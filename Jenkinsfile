@@ -2,7 +2,7 @@ pipeline {
   agent {
     docker {
       image 'maven:3-alpine'
-      args '-v /root/.m2:/root/.m2 --network container:sonarqube'
+      args '-v /root/.m2:/root/.m2'
     }
   }
   options {
@@ -35,7 +35,7 @@ pipeline {
           steps {
           
               echo 'Scanning...'
-              sh 'mvn -X -DskipTests sonar:sonar'
+              sh 'mvn -X -DskipTests sonar:sonar -Dsonar.host.url=http://localhost:9000'
           }}
   }
 }
