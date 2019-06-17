@@ -35,7 +35,7 @@ pipeline {
           steps {
           
               echo 'Scanning...'
-              sh 'mvn -X -DskipTests sonar:sonar -Dsonar.host.url=http://localhost:9000'
+              sh 'mvn -X -DskipTests sonar:sonar -Dsonar.host.url=http://127.0.0.1:9000'
           }}
   }
 }
