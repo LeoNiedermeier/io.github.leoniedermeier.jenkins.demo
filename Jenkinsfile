@@ -29,11 +29,11 @@ pipeline {
                     junit 'target/surefire-reports/*.xml' 
                 }
             }
-        }
         
-        stage('Scan') {
-            echo 'Scanning...'
-            sh 'mvn -X -DskipTests sonar:sonar'
+          stage('Scan') {
+              echo 'Scanning...'
+              sh 'mvn -X -DskipTests sonar:sonar'
+          }
         }
   }
 }
