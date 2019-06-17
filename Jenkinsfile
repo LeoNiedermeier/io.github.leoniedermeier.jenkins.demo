@@ -17,12 +17,12 @@ pipeline {
     stage('Build') {
             steps {
                 sh 'mvn -version'
-                sh 'mvn -X -B -DskipTests clean package'
+                sh 'mvn -B -DskipTests buildplan:list clean package'
             }
     }
     stage('Test') { 
             steps {
-                sh 'mvn -X -B test' 
+                sh 'mvn -B buildplan:list test' 
             }
             post {
                 always {
@@ -35,7 +35,7 @@ pipeline {
           steps {
           
               echo 'Scanning...'
-              sh 'mvn -X -DskipTests sonar:sonar -Dsonar.host.url=http://127.0.0.1:9000'
+              sh 'mvn buildplan:list sonar:sonar -Dsonar.host.url=http://127.0.0.1:9000'
           }}
   stage('Deploy') {
      steps {
