@@ -3,6 +3,7 @@ pipeline {
     docker {
       image 'maven:3-alpine'
       args '-v /root/.m2:/root/.m2'
+      network 'container:sonarnet'
     }
   }
   options {
@@ -16,6 +17,7 @@ pipeline {
     }
     stage('Build') {
             steps {
+                sh 'mvn -version'
                 sh 'mvn -B -DskipTests clean package'
             }
         }
@@ -28,6 +30,11 @@ pipeline {
                     junit 'target/surefire-reports/*.xml' 
                 }
             }
+        }
+        
+        stage('Scan') {
+            echo 'Scanning...'
+            sh 'mvn -X -DskipTests sonar:sonar'
         }
   }
 }
