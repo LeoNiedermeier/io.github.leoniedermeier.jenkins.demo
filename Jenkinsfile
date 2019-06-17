@@ -2,9 +2,11 @@ pipeline {
   agent {
     docker {
       image 'maven:3-alpine'
-      args 'sh  -v /root/.m2:/root/.m2'
+      args '-v /root/.m2:/root/.m2'
     }
-
+  }
+  options {
+    skipStagesAfterUnstable()
   }
   stages {
     stage('Clone') {
