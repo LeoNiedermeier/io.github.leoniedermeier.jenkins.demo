@@ -44,6 +44,7 @@ pipeline {
   }
   stage('Publish') {
    steps {
+   script {
  def pom = readMavenPom file: 'pom.xml'
  nexusPublisher nexusInstanceId: 'Nexus', \
   nexusRepositoryId: 'snapshots', \
@@ -55,7 +56,7 @@ pipeline {
   packaging: "${pom.packaging}", \
   version: "${pom.version}"]]]
 }
-  
+  }
   }
   
   
