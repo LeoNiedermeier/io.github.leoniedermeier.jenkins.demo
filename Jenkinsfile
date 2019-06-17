@@ -53,9 +53,7 @@ pipeline {
   
   stage('Publish') {
    steps {
-   environment {
-                      POM_VERSION = readMavenPom().getVersion()
-                    }
+   
                     
    script {
  def pom = readMavenPom file: 'pom.xml'
