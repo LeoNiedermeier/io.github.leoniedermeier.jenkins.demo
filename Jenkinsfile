@@ -17,12 +17,12 @@ pipeline {
     stage('Build') {
             steps {
                 sh 'mvn -version'
-                sh 'mvn -B -DskipTests buildplan:list clean package'
+                sh 'mvn -B -DskipTests fr.jcgay.maven.plugins:buildplan-maven-plugin:list clean package'
             }
     }
     stage('Test') { 
             steps {
-                sh 'mvn -B buildplan:list test' 
+                sh 'mvn -B fr.jcgay.maven.plugins:buildplan-maven-plugin:list test' 
             }
             post {
                 always {
@@ -35,7 +35,7 @@ pipeline {
           steps {
           
               echo 'Scanning...'
-              sh 'mvn buildplan:list sonar:sonar -Dsonar.host.url=http://127.0.0.1:9000'
+              sh 'mvn fr.jcgay.maven.plugins:buildplan-maven-plugin:list sonar:sonar -Dsonar.host.url=http://127.0.0.1:9000'
           }}
   stage('Deploy') {
      steps {
