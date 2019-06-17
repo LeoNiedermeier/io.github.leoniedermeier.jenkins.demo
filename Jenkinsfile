@@ -44,8 +44,8 @@ pipeline {
   }
   stage('Publish') {
  def pom = readMavenPom file: 'pom.xml'
- nexusPublisher nexusInstanceId: 'nexus2', \
-  nexusRepositoryId: 'releases', \
+ nexusPublisher nexusInstanceId: 'Nexus', \
+  nexusRepositoryId: 'snapshots', \
   packages: [[$class: 'MavenPackage', \
   mavenAssetList: [[classifier: '', extension: '', \
   filePath: "target/${pom.artifactId}-${pom.version}.${pom.packaging}"]], \
