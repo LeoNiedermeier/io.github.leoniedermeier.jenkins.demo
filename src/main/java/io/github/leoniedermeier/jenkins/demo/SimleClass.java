@@ -6,4 +6,7 @@ public class SimleClass {
        super();
     }
 
+    public String doSomething() {
+        return "abc";
+    }
 }
