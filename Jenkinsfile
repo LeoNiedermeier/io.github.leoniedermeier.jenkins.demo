@@ -39,7 +39,7 @@ pipeline {
           }}
   stage('Deploy') {
      steps {
-         
+         echo 'Hello Jenkins!'
      }
   }
   
