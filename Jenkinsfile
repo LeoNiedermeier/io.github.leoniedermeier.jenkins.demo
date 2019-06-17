@@ -51,7 +51,26 @@ pipeline {
      }
   }
   
-  
+  stage('Publish') {
+   steps {
+   environment {
+                      POM_VERSION = readMavenPom().getVersion()
+                    }
+                    
+   script {
+ def pom = readMavenPom file: 'pom.xml'
+ nexusPublisher nexusInstanceId: 'Nexus', \
+  nexusRepositoryId: 'snapshots', \
+  packages: [[$class: 'MavenPackage', \
+  mavenAssetList: [[classifier: '', extension: '', \
+  filePath: "target/${pom.artifactId}-${pom.version}.${pom.packaging}"]], \
+  mavenCoordinate: [artifactId: "${pom.artifactId}", \
+  groupId: "${pom.groupId}", \
+  packaging: "${pom.packaging}", \
+  version: "${pom.version}"]]]
+}
+  }
+  }
   
   }
 }
