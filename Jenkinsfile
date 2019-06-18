@@ -1,5 +1,5 @@
 node() {
-    ansiColor('xterm') {
+     
         
         stage('XXX') {
             docker.image('maven:3-alpin').inside {
@@ -10,7 +10,7 @@ node() {
                 }
             }
         }
-    }
+   
 }
 
 /*
