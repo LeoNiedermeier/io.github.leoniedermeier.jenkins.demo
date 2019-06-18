@@ -24,7 +24,7 @@ pipeline {
             steps {
                 echo " Project version is ${VERSION}"
                 echo "Artifact id is ${IMAGE}"
-                withMaven(maven: 'maven-3.5',  mavenSettingsConfig: '47b02ef1-5ee6-48b5-9f8f-25d6f2afe9dd')
+                withMaven(maven: 'maven-3.5',  mavenSettingsConfig: 'XX47b02ef1-5ee6-48b5-9f8f-25d6f2afe9dd')
                 {
                 sh 'mvn -version'
                 sh 'mvn help:effective-settings'
