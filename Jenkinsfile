@@ -27,6 +27,7 @@ pipeline {
                 withMaven(  mavenSettingsConfig: '47b02ef1-5ee6-48b5-9f8f-25d6f2afe9dd')
                 {
                 sh 'mvn -version'
+                sh 'mvn help:effective-settings'
                 sh 'mvn -B -DskipTests fr.jcgay.maven.plugins:buildplan-maven-plugin:list clean package'
                 }
             }
