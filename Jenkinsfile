@@ -22,10 +22,13 @@ pipeline {
          
     }
             steps {
-             echo " Project version is ${VERSION}"
+                echo " Project version is ${VERSION}"
                 echo "Artifact id is ${IMAGE}"
+                withMaven(  mavenSettingsConfig: '47b02ef1-5ee6-48b5-9f8f-25d6f2afe9dd')
+                {
                 sh 'mvn -version'
                 sh 'mvn -B -DskipTests fr.jcgay.maven.plugins:buildplan-maven-plugin:list clean package'
+                }
             }
     }
     stage('Test') { 
@@ -49,26 +52,8 @@ pipeline {
      steps {
          echo 'Hello Jenkins!'
      }
-  }
-  
-  stage('Publish') {
-   steps {
-   
-                    
-   script {
- def pom = readMavenPom file: 'pom.xml'
- nexusPublisher nexusInstanceId: 'Nexus', \
-  nexusRepositoryId: 'releases', \
-  packages: [[$class: 'MavenPackage', \
-  mavenAssetList: [[classifier: '', extension: '', \
-  filePath: "target/${pom.artifactId}-${pom.version}.${pom.packaging}"]], \
-  mavenCoordinate: [artifactId: "${pom.artifactId}", \
-  groupId: "${pom.groupId}", \
-  packaging: "${pom.packaging}", \
-  version: "${pom.version}"]]]
-}
-  }
-  }
-  
+  }  
   }
 }
+
+// maven config file: 47b02ef1-5ee6-48b5-9f8f-25d6f2afe9dd
