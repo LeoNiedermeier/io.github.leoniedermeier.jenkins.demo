@@ -1,4 +1,4 @@
-node("slave") {
+node() {
     ansiColor('xterm') {
         
         stage('XXX') {
