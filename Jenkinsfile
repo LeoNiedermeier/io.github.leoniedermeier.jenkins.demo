@@ -50,7 +50,7 @@ pipeline {
           }}
   stage('Deploy') {
      steps {
-         echo 'Hello Jenkins!'
+          sh 'mvn -B fr.jcgay.maven.plugins:buildplan-maven-plugin:list deploy' 
      }
   }  
   }
