@@ -1,3 +1,19 @@
+node("slave") {
+    ansiColor('xterm') {
+        
+        stage('XXX') {
+            docker.image('maven:3-alpin').inside {
+                withMaven(
+                        mavenSettingsConfig: '47b02ef1-5ee6-48b5-9f8f-25d6f2afe9dd'
+                ) {
+                     sh 'mvn help:effective-settings'
+                }
+            }
+        }
+    }
+}
+
+/*
 pipeline {
   agent {
     docker {
@@ -8,6 +24,9 @@ pipeline {
   options {
     skipStagesAfterUnstable()
   }
+  
+  
+ 
   stages {
     stage('Clone') {
       steps {
@@ -56,5 +75,5 @@ pipeline {
   }  
   }
 }
-
+*/
 // maven config file: 47b02ef1-5ee6-48b5-9f8f-25d6f2afe9dd
