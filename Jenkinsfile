@@ -21,7 +21,7 @@
       steps {
         configFileProvider([configFile(fileId: 'jenkins-maven-settings', variable: 'MAVEN_SETTINGS')]) {
           sh 'mvn fr.jcgay.maven.plugins:buildplan-maven-plugin:list-phase   -Dbuildplan.tasks=clean,deploy'
-          sh 'mvn clean deploy'
+          sh 'mvn -s $MAVEN_SETTINGS clean deploy'
         }
       }
       post {
