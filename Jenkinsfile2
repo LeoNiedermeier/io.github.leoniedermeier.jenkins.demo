@@ -1,4 +1,3 @@
-// Einfaches Jenkinsfile 
  pipeline {
   agent {
     docker {
@@ -17,17 +16,32 @@
       }
     }
   
-    stage('Maven: clean deploy') {
+    stage('Build') {
       steps {
         configFileProvider([configFile(fileId: 'jenkins-maven-settings', variable: 'MAVEN_SETTINGS')]) {
-          sh 'mvn fr.jcgay.maven.plugins:buildplan-maven-plugin:list-phase   -Dbuildplan.tasks=clean,deploy'
-          sh 'mvn clean deploy'
+          sh 'mvn -DskipTests clean install'
         }
       }
       post {
         always {
           junit allowEmptyResults: true, testResults: 'target/surefire-reports/*.xml' 
         }
+      }
+    }
+    
+    stage('Sonar Analysis') {
+      steps {
+        configFileProvider([configFile(fileId: 'jenkins-maven-settings', variable: 'MAVEN_SETTINGS')]) {
+          sh 'mvn -s $MAVEN_SETTINGS sonar:sonar'
+        }
+      }
+    }
+  
+    stage('Deploy') {
+      steps {
+       configFileProvider([configFile(fileId: 'jenkins-maven-settings', variable: 'MAVEN_SETTINGS')]) {
+          sh 'mvn -s $MAVEN_SETTINGS org.apache.maven.plugins:maven-deploy-plugin:3.0.0-M1:deploy'
+        } 
       }
     }  
   }
