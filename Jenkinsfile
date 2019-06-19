@@ -37,7 +37,7 @@
       }
     }
     
-    stage('Scan') {
+    stage('Sonar Analysis') {
       steps {
         configFileProvider([configFile(fileId: 'jenkins-maven-settings', variable: 'MAVEN_SETTINGS')]) {
           sh 'mvn -s $MAVEN_SETTINGS sonar:sonar'
@@ -48,7 +48,7 @@
     stage('Deploy') {
       steps {
        configFileProvider([configFile(fileId: 'jenkins-maven-settings', variable: 'MAVEN_SETTINGS')]) {
-          sh 'mvn -s $MAVEN_SETTINGS  deploy'
+          sh 'mvn -s $MAVEN_SETTINGS  org.apache.maven.plugins:maven-deploy-plugin:3.0.0-M1:deploy'
         } 
       }
     }  
