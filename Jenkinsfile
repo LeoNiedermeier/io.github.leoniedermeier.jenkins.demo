@@ -19,25 +19,12 @@
     stage('Build') {
       steps {
         configFileProvider([configFile(fileId: 'jenkins-maven-settings', variable: 'MAVEN_SETTINGS')]) {
-          sh 'mvn -DskipTests clean install'
+          sh 'mvn -DskipTests clean verify'
         }
       }
       post {
         always {
           junit allowEmptyResults: true, testResults: 'target/surefire-reports/*.xml' 
-        }
-      }
-    }
-  
-    stage('Test') { 
-      steps {
-        configFileProvider([configFile(fileId: 'jenkins-maven-settings', variable: 'MAVEN_SETTINGS')]) {
-          sh 'mvn -s $MAVEN_SETTINGS test'
-        }
-      }
-      post {
-        always {
-          junit 'target/surefire-reports/*.xml' 
         }
       }
     }
@@ -53,7 +40,7 @@
     stage('Deploy') {
       steps {
        configFileProvider([configFile(fileId: 'jenkins-maven-settings', variable: 'MAVEN_SETTINGS')]) {
-          sh 'mvn -s $MAVEN_SETTINGS  org.apache.maven.plugins:maven-deploy-plugin:3.0.0-M1:deploy'
+          sh 'mvn -s $MAVEN_SETTINGS install:install org.apache.maven.plugins:maven-deploy-plugin:3.0.0-M1:deploy'
         } 
       }
     }  
