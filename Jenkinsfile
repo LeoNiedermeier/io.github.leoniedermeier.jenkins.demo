@@ -19,7 +19,12 @@
     stage('Build') {
       steps {
         configFileProvider([configFile(fileId: 'jenkins-maven-settings', variable: 'MAVEN_SETTINGS')]) {
-          sh 'mvn -DskipTests clean package'
+          sh 'mvn -DskipTests clean install'
+        }
+      }
+      post {
+        always {
+          junit 'target/surefire-reports/*.xml' 
         }
       }
     }
