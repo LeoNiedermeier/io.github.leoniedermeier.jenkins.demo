@@ -1,11 +1,6 @@
 // Einfaches Jenkinsfile 
  pipeline {
-  agent {
-    docker {
-      image 'maven:3-alpine'
-      args '-v /root/.m2:/root/.m2 --network=host '
-    }
-  }
+  	agent any 
   options {
     skipStagesAfterUnstable()
   }
@@ -18,12 +13,17 @@
       }
     }
   	stage('Tag') {
-  	agent any 
 	     steps {
           sh "git tag -a release-${ReleaseVersion} -m=\"Release ${ReleaseVersion}\""	
      	}
 	  }
     stage('Maven: clean deploy') {
+  agent {
+    docker {
+      image 'maven:3-alpine'
+      args '-v /root/.m2:/root/.m2 --network=host '
+    }
+  }
       steps {
         configFileProvider([configFile(fileId: 'jenkins-maven-settings', variable: 'MAVEN_SETTINGS')]) {
           sh "mvn -s ${MAVEN_SETTINGS}  fr.jcgay.maven.plugins:buildplan-maven-plugin:list-phase   -Dbuildplan.tasks=clean,deploy"
