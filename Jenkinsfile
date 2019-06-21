@@ -13,15 +13,18 @@
   stages {
     stage('Clone') {
       steps {
-        git(branch: 'master', url: 'https://github.com/LeoNiedermeier/io.github.leoniedermeier.jenkins.demo.git')
+        checkout scm
+        //git(branch: 'master', url: 'https://github.com/LeoNiedermeier/io.github.leoniedermeier.jenkins.demo.git')
       }
     }
   
     stage('Maven: clean deploy') {
       steps {
         configFileProvider([configFile(fileId: 'jenkins-maven-settings', variable: 'MAVEN_SETTINGS')]) {
-          sh 'mvn fr.jcgay.maven.plugins:buildplan-maven-plugin:list-phase   -Dbuildplan.tasks=clean,deploy'
-          sh 'mvn -s $MAVEN_SETTINGS clean deploy'
+          echo "${env.BRANCH_NAME}"
+          //sh 'printenv'
+          sh "mvn -s ${MAVEN_SETTINGS}  fr.jcgay.maven.plugins:buildplan-maven-plugin:list-phase   -Dbuildplan.tasks=clean,deploy"
+          sh "mvn -s ${MAVEN_SETTINGS} -Drevision=${BRANCH_NAME}-X-SNAPSHOT -Drevision clean deploy"
         }
       }
       post {
