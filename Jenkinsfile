@@ -21,11 +21,9 @@
     stage('Maven: clean deploy') {
       steps {
         configFileProvider([configFile(fileId: 'jenkins-maven-settings', variable: 'MAVEN_SETTINGS')]) {
-          //sh 'printenv'
           sh "mvn -s ${MAVEN_SETTINGS}  fr.jcgay.maven.plugins:buildplan-maven-plugin:list-phase   -Dbuildplan.tasks=clean,deploy"
-          echo "Execute:"
-          echo "mvn -s ${MAVEN_SETTINGS} -Drevision=${BRANCH_NAME}-X-SNAPSHOT clean deploy"
-          sh "mvn -s ${MAVEN_SETTINGS} -Drevision=${BRANCH_NAME}-X-SNAPSHOT clean deploy"
+          // Mit CI fiendly versions:	
+          sh "mvn -s ${MAVEN_SETTINGS} -Drevision=${BRANCH_NAME}-SNAPSHOT clean deploy"
         }
       }
       post {
