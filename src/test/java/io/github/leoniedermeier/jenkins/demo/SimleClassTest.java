@@ -9,7 +9,7 @@ class SimleClassTest {
     @Test
     void testDoSomething() {
         SimleClass simleClass = new SimleClass();
-        assertEquals("abc", simleClass.doSomething());
+        assertEquals("abX", simleClass.doSomething());
     }
 
 }
