@@ -24,7 +24,7 @@
           sh "mvn -s ${MAVEN_SETTINGS}  fr.jcgay.maven.plugins:buildplan-maven-plugin:list-phase   -Dbuildplan.tasks=clean,deploy"
           // Mit CI fiendly versions:
           sh "git tag -a release-${ReleaseVersion}"	
-          sh "mvn -s ${MAVEN_SETTINGS} release-${ReleaseVersion} -Drevision=${ReleaseVersion}-SNAPSHOT clean install"
+          sh "mvn -s ${MAVEN_SETTINGS} -Drevision=${ReleaseVersion}-SNAPSHOT clean install"
         }
       }
       post {
