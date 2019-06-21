@@ -18,6 +18,7 @@
       }
     }
   	stage('Tag') {
+  	agent any 
 	     steps {
           sh "git tag -a release-${ReleaseVersion} -m=\"Release ${ReleaseVersion}\""	
      	}
