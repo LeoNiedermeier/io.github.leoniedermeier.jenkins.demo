@@ -23,12 +23,20 @@
         configFileProvider([configFile(fileId: 'jenkins-maven-settings', variable: 'MAVEN_SETTINGS')]) {
           sh "mvn -s ${MAVEN_SETTINGS}  fr.jcgay.maven.plugins:buildplan-maven-plugin:list-phase   -Dbuildplan.tasks=clean,deploy"
           // Mit CI fiendly versions:	
-          sh "mvn -s ${MAVEN_SETTINGS} -Drevision=${ReleaseVersion}-SNAPSHOT clean install"
+          sh "mvn -s ${MAVEN_SETTINGS} org.apache.maven.plugins:maven-scm-plugin:1.11.2:tag -Dtag=release-${ReleaseVersion} -Drevision=${ReleaseVersion}-SNAPSHOT clean install"
         }
       }
       post {
         always {
           junit allowEmptyResults: true, testResults: 'target/surefire-reports/*.xml' 
+        }
+        success {
+             //        https://issues.jenkins-ci.org/browse/JENKINS-28335
+          sh 'git config --local credential.helper "!p() { echo username=\\$GIT_USERNAME; echo password=\\$GIT_PASSWORD; }; p"'
+          withCredentials([usernamePassword(credentialsId: 'git-pass-credentials-ID', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
+            sh "git tag -a some_tag -m 'Jenkins'"
+            sh "git push origin -tag release-${ReleaseVersion}"
+          }
         }
       }
     }  
