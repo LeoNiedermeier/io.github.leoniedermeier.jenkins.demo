@@ -30,7 +30,7 @@
         configFileProvider([configFile(fileId: 'jenkins-maven-settings', variable: 'MAVEN_SETTINGS')]) {
           sh "mvn -s ${MAVEN_SETTINGS}  fr.jcgay.maven.plugins:buildplan-maven-plugin:list-phase   -Dbuildplan.tasks=clean,deploy"
           // Mit CI fiendly versions:
-          sh "mvn -s ${MAVEN_SETTINGS} -Drevision=${ReleaseVersion}-SNAPSHOT clean install"
+          sh "mvn -s ${MAVEN_SETTINGS} -Drevision=${ReleaseVersion} clean deploy"
         }
       }
       post {
