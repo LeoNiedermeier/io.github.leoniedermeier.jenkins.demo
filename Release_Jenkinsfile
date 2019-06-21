@@ -17,13 +17,16 @@
         //git(branch: 'master', url: 'https://github.com/LeoNiedermeier/io.github.leoniedermeier.jenkins.demo.git')
       }
     }
-  
+  	stage('Tag') {
+	     steps {
+          sh "git tag -a release-${ReleaseVersion} -m=\"Release ${ReleaseVersion}\""	
+     	}
+	  }
     stage('Maven: clean deploy') {
       steps {
         configFileProvider([configFile(fileId: 'jenkins-maven-settings', variable: 'MAVEN_SETTINGS')]) {
           sh "mvn -s ${MAVEN_SETTINGS}  fr.jcgay.maven.plugins:buildplan-maven-plugin:list-phase   -Dbuildplan.tasks=clean,deploy"
           // Mit CI fiendly versions:
-          sh "git tag -a release-${ReleaseVersion} -m=\"Release ${ReleaseVersion}\""	
           sh "mvn -s ${MAVEN_SETTINGS} -Drevision=${ReleaseVersion}-SNAPSHOT clean install"
         }
       }
