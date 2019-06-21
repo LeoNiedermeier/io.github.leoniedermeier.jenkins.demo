@@ -43,7 +43,7 @@
        steps {
              //        https://issues.jenkins-ci.org/browse/JENKINS-28335
           withCredentials([usernamePassword(credentialsId: 'git-pass-credentials-ID', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
-            sh "git push origin --tag release-${ReleaseVersion}"
+            sh "git push origin release-${ReleaseVersion}"
        }
     }
     }  
