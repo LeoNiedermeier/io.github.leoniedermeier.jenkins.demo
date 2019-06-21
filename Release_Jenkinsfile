@@ -13,8 +13,8 @@
       }
     }
   	stage('Tag') {
-  	// in maven:3-alpine ist kein git drin.
 	     steps {
+  	// in maven:3-alpine ist kein git drin.
           sh "git tag -a release-${ReleaseVersion} -m=\"Release ${ReleaseVersion}\""	
           sh 'git config --local credential.helper "!p() { echo username=\\$GIT_USERNAME; echo password=\\$GIT_PASSWORD; }; p"'
      	}
@@ -39,13 +39,13 @@
         }
         }
       }
-    }
-    stage('Example Build') {
+    stage('push tag') {
        steps {
              //        https://issues.jenkins-ci.org/browse/JENKINS-28335
           withCredentials([usernamePassword(credentialsId: 'git-pass-credentials-ID', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
             sh "git push origin -tag release-${ReleaseVersion}"
        }
+    }
     }  
   }
 }
