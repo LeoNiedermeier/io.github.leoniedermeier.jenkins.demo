@@ -1,6 +1,6 @@
 // Einfaches Jenkinsfile 
  pipeline {
-  	agent any 
+  agent any 
   options {
     skipStagesAfterUnstable()
   }
@@ -9,23 +9,22 @@
     stage('Clone') {
       steps {
         checkout scm
-        //git(branch: 'master', url: 'https://github.com/LeoNiedermeier/io.github.leoniedermeier.jenkins.demo.git')
       }
     }
   	stage('Tag') {
-	     steps {
-  	// in maven:3-alpine ist kein git drin.
-          sh "git tag -a release-${ReleaseVersion} -m \"Release ${ReleaseVersion}\""	
-          sh 'git config --local credential.helper "!p() { echo username=\\$GIT_USERNAME; echo password=\\$GIT_PASSWORD; }; p"'
-     	}
-	  }
+  	  steps {
+  	    // in maven:3-alpine ist kein git drin.
+        sh "git tag -a release-${ReleaseVersion} -m \"Release ${ReleaseVersion}\""	
+       // sh 'git config --local credential.helper "!p() { echo username=\\$GIT_USERNAME; echo password=\\$GIT_PASSWORD; }; p"'
+      }
+	}
     stage('Maven: clean deploy') {
-  agent {
-    docker {
-      image 'maven:3-alpine'
-      args '-v /root/.m2:/root/.m2 --network=host '
-    }
-  }
+      agent {
+        docker {
+          image 'maven:3-alpine'
+          args '-v /root/.m2:/root/.m2 --network=host '
+        }
+      }
       steps {
         configFileProvider([configFile(fileId: 'jenkins-maven-settings', variable: 'MAVEN_SETTINGS')]) {
           sh "mvn -s ${MAVEN_SETTINGS}  fr.jcgay.maven.plugins:buildplan-maven-plugin:list-phase   -Dbuildplan.tasks=clean,deploy"
@@ -37,15 +36,15 @@
         always {
           junit allowEmptyResults: true, testResults: 'target/surefire-reports/*.xml' 
         }
-        }
       }
+    }
     stage('push tag') {
-       steps {
-             //        https://issues.jenkins-ci.org/browse/JENKINS-28335
+      steps {
+         //  https://issues.jenkins-ci.org/browse/JENKINS-28335
           withCredentials([usernamePassword(credentialsId: 'git-pass-credentials-ID', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
             sh "git push origin release-${ReleaseVersion}"
-       }
-    }
+        }
+      }
     }  
   }
 }
