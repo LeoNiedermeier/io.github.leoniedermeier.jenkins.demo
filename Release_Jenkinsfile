@@ -4,6 +4,9 @@
   options {
     skipStagesAfterUnstable()
   }
+  parameters {
+        string(name: 'ReleaseVersionX', defaultValue: 'Mr Jenkins', description: 'Release Version?')
+  }
   
   stages {
     stage('Clone') {
