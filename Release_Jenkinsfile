@@ -44,6 +44,11 @@
             sh "git push origin release-${ReleaseVersion}"
         }
       }
+      post {
+        always {
+          sh 'git config --local --unset credential.helper'
+        }
+      }
     }  
   }
 }
