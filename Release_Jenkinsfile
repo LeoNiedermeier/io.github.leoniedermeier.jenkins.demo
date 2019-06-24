@@ -39,7 +39,7 @@
     stage('push tag') {
       steps {
          //  https://issues.jenkins-ci.org/browse/JENKINS-28335
-          sh 'git config --local credential.helper "! echo username=\\$GIT_USERNAME; echo password=X\\$GIT_PASSWORD;"'
+          sh 'git config --local credential.helper "! echo username=\\$GIT_USERNAME; echo password=\\$GIT_PASSWORD;"'
           withCredentials([usernamePassword(credentialsId: 'git-pass-credentials-ID', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
             sh "git push origin release-${ReleaseVersion}"
         }

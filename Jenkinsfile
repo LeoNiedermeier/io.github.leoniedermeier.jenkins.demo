@@ -14,7 +14,6 @@
     stage('Clone') {
       steps {
         checkout scm
-        //git(branch: 'master', url: 'https://github.com/LeoNiedermeier/io.github.leoniedermeier.jenkins.demo.git')
       }
     }
   
