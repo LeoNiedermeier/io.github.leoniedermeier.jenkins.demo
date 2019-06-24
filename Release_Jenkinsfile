@@ -5,7 +5,7 @@
     skipStagesAfterUnstable()
   }
   parameters {
-        string(name: 'ReleaseVersionX', defaultValue: 'Mr Jenkins', description: 'Release Version?')
+        string(name: 'ReleaseVersion', defaultValue: '', description: 'Version angeben (Format x.y.z)')
   }
   
   stages {
