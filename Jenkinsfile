@@ -8,6 +8,7 @@
   }
   options {
     skipStagesAfterUnstable()
+    buildDiscarder(logRotator(numToKeepStr: '5'))
   }
   
   stages {

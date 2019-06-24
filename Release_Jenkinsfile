@@ -3,6 +3,7 @@
   agent any 
   options {
     skipStagesAfterUnstable()
+    buildDiscarder(logRotator(numToKeepStr: '5'))
   }
   parameters {
         string(name: 'ReleaseVersion', defaultValue: '', description: 'Version angeben (Format x.y.z)')
