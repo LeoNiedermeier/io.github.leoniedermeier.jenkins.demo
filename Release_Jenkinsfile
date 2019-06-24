@@ -13,9 +13,7 @@
     }
   	stage('Tag') {
   	  steps {
-  	    // in maven:3-alpine ist kein git drin.
         sh "git tag -a release-${ReleaseVersion} -m \"Release ${ReleaseVersion}\""	
-       // sh 'git config --local credential.helper "!p() { echo username=\\$GIT_USERNAME; echo password=\\$GIT_PASSWORD; }; p"'
       }
 	}
     stage('Maven: clean deploy') {
