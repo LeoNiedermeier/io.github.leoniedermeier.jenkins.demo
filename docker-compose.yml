@@ -1,0 +1,64 @@
+version: "2"
+# Beispiele
+# https://github.com/SonarSource/docker-sonarqube/blob/master/recipes/docker-compose-postgres-example.yml
+# https://github.com/nabil-s/docker-cherry/blob/master/docker-compose.yml
+# https://github.com/ibwgr/CompositeBuilder/blob/master/docker-compose.yml
+# https://github.com/bbr88/ci-cd
+services:
+  sonarqube:
+    image: sonarqube
+    ports:
+      - "9000:9000"
+    networks:
+      - sonarnet
+    environment:
+      - sonar.jdbc.url=jdbc:postgresql://db:5432/sonar
+    volumes:
+      - sonarqube_conf:/opt/sonarqube/conf
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+  nexus:
+    image: sonatype/nexus3
+    networks:
+      - sonarnet
+    volumes:
+      - "nexus3-data:/sonatype-work"
+    ports:
+      - "8081:8081"
+      
+  db:
+    image: postgres
+    networks:
+      - sonarnet
+    environment:
+      - POSTGRES_USER=sonar
+      - POSTGRES_PASSWORD=sonar
+    volumes:
+      - postgresql:/var/lib/postgresql
+      # This needs explicit mapping due to https://github.com/docker-library/postgres/blob/4e48e3228a30763913ece952c611e5e9b95c8759/Dockerfile.template#L52
+      - postgresql_data:/var/lib/postgresql/data
+  jenkins:
+    container_name: jenkins-blueocean
+    image: jenkinsci/blueocean
+    user: root
+    networks:
+      - sonarnet
+    ports:
+      - 8080:8080
+      - 50000:50000
+    volumes:
+    - jenkins_data:/var/jenkins_home
+    - /var/run/docker.sock:/var/run/docker.sock
+networks:
+  sonarnet:
+    driver: bridge
+
+# unter /var/lib/docker/volumes
+volumes:
+  sonarqube_conf:
+  sonarqube_data:
+  sonarqube_extensions:
+  postgresql:
+  postgresql_data:
+  nexus3-data:
+  jenkins_data:
